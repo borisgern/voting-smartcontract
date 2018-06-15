@@ -23,6 +23,7 @@ var createContractObject = (scCode) => {
   var BIN = compiledSC.contracts[':Voting'].bytecode;
   var ABI = JSON.parse(compiledSC.contracts[':Voting'].interface);
   var OBJ = web3.eth.contract(ABI);
+  //console.log({BIN, ABI, OBJ});
   return {BIN, ABI, OBJ};
 };
 
@@ -30,7 +31,7 @@ var initVoting = (options) => {
     var coinbaseAccount = createAccount(pas);
     console.log(`coinbase account ${coinbaseAccount} was created`);
     var contract = createContractObject('./voting.sol');
-    return sc = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       web3.personal.unlockAccount(coinbaseAccount, pas, 30);
       contract.OBJ.new(options, {from: coinbaseAccount, data: `0x${contract.BIN}`, gas: 4700000}, (e, contr) => {
             if(!e) {
@@ -49,11 +50,27 @@ var createAccount = (pas) => {
 };
 
 var createContractInstance = (contr, scObject) => {
-  var contractInstance = scObject.OBJ.at(contr);
-  var owner = contractInstance.owner.call();
-  console.log(`Owner of contract is ${owner}`);
+  return contractInstance = scObject.OBJ.at(contr);
+  //var owner = contractInstance.owner.call();
+  //console.log(`Owner of contract is ${owner}`);
+};
+
+var getResult = (sc, options) => {
+  var res = [];
+  for (var i = 0; i < options.length; i++) {
+    res[i] = sc.checkResult.call(options[i]);
+    console.log(`Result for ${options[i]} is ${res[i]}`);
+  };
+};
+
+var vote = (sc, option, address) => {
+  web3.personal.unlockAccount(address, pas, 30);
+  var txHash = sc.vote(option, {from: address});
+  console.log("txHash = ",txHash);
+  while (web3.eth.getTransactionReceipt(txHash) === null); //подумать как исправить это
+  return true;
 };
 
 
 
-module.exports = {checkBlockchainStatus, initVoting, createContractObject, createContractInstance};
+module.exports = {checkBlockchainStatus, initVoting, createContractObject, createContractInstance, getResult, vote};
