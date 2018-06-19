@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Voting Application | Progress</title>
+</head>
+<body class="container">
+  <h1>A Simple Hello World Voting Application</h1>
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Candidate</th>
+          <th>Votes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Candidate-1</td>
+          <td id="candidate-1"></td>
+        </tr>
+        <tr>
+          <td>Candidate-2</td>
+          <td id="candidate-2"></td>
+        </tr>
+        <tr>
+          <td>Against all</td>
+          <td id="against_all"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <input type="text" id="option" />
+  <a href="#" onclick="start()" class="btn btn-primary">Vote</a>
+</body>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js"></script>
+<script src="./voting.js"></script>
+<script src="../utils/blockchain-calls.js"></script>
+</html>
