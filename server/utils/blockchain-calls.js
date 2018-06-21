@@ -17,6 +17,10 @@ var checkBlockchainStatus = () => {
   }
 };
 
+var getAccountsList = () => {
+  return web3.eth.accounts
+};
+
 var createContractObject = (scCode) => {
   var compiledSC = solc.compile(fs.readFileSync(scCode).toString());
   console.log("contract was compiled");
@@ -74,4 +78,4 @@ var vote = (sc, option, address) => {
 
 
 
-module.exports = {checkBlockchainStatus, initVoting, createContractObject, createContractInstance, getResult, vote};
+module.exports = {checkBlockchainStatus, initVoting, createContractObject, createContractInstance, getResult, vote, getAccountsList};

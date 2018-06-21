@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
-var {checkBlockchainStatus, initVoting, createContractObject, createContractInstance, getResult, vote} = require('./utils/blockchain-calls');
+var {checkBlockchainStatus, initVoting, createContractObject, createContractInstance, getResult, vote, getAccountsList} = require('./utils/blockchain-calls');
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -36,6 +36,7 @@ io.on('connection', (socket) => {
         votingResult[0].result = res[i].c;
         console.log(`Result for ${votingResult[i].name} is: ${res[i]}`);
       };
+      io.emit('blockchainInit', getAccountsList())
       io.emit('newVoteResult', votingResult);
     }, (e) => {
       console.log(e);
