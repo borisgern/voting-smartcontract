@@ -29,7 +29,7 @@ var createContractObject = (scCode) => {
 
 var initVoting = (options) => {
     var coinbaseAccount = createAccount(pas);
-    console.log(`coinbase account ${coinbaseAccount} was created`);
+    console.log(`new account ${coinbaseAccount} was created`);
     var contract = createContractObject('./voting.sol');
     return new Promise((resolve, reject) => {
       web3.personal.unlockAccount(coinbaseAccount, pas, 30);
@@ -59,8 +59,9 @@ var getResult = (sc, options) => {
   var res = [];
   for (var i = 0; i < options.length; i++) {
     res[i] = sc.checkResult.call(options[i]);
-    console.log(`Result for ${options[i]} is ${res[i]}`);
   };
+  console.log(res);
+  return res;
 };
 
 var vote = (sc, option, address) => {
