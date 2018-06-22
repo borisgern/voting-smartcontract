@@ -1,18 +1,34 @@
-
 var socket = io();
 
 socket.on('connect', function () {
   console.log('connected to server');
 
-  socket.emit('startVoting', {optionOne: "Boris", optionTwo: "Liza"});
+  var params = jQuery.deparam(window.location.search);
+  params.optionThree = 'Against all';
+  console.log(params);
+
+  jQuery('td#name')[0].textContent = params.optionOne;
+  jQuery('td#name')[1].textContent = params.optionTwo;
+  jQuery('td#name')[2].textContent = params.optionThree;
+  jQuery('[name=voting-list]')[0][0].textContent = params.optionOne;
+  jQuery('[name=voting-list]')[0][1].textContent = params.optionTwo;
+  jQuery('[name=voting-list]')[0][2].textContent = params.optionThree;
+
+  socket.emit('startVoting', params, function (err) {
+    if (err) {
+      alert(err);
+      window.location.href = '/';
+    } else {
+      console.log('No error');
+    }
+  });
 });
 
 socket.on('blockchainInit', function (accounts) {
-  console.log(accounts);
 
   var template = jQuery('#accounts-list-template').html();
-  console.log(template);
-  for (var i = 0; i<10; i++) {
+
+  for (var i = 0; i<accounts.length; i++) {
     var html = Mustache.render(template, {
       value: accounts[i],
       text: accounts[i]
@@ -20,10 +36,8 @@ socket.on('blockchainInit', function (accounts) {
     jQuery('[name=accounts-list]').append(html);
   };
 
-  console.log(html);
-  console.log(jQuery('#voting-list-template').html());
-  console.log(jQuery('[name=voting-list]')[0][0]);
-  //jQuery('[name=voting-list]')[0][0].outerHTML = html;
+  jQuery('[name=accounts-list]')[0][0].remove();
+  jQuery('#send-button').removeAttr('disabled');
 });
 
 socket.on('newVoteResult', function (result) {
@@ -36,8 +50,12 @@ socket.on('newVoteResult', function (result) {
 jQuery('#vote-form').on('submit', function (e) {
   e.preventDefault();
   console.log('on submit ', jQuery('[name=voting-list]').val());
-  socket.emit('newVote', {
-    option: jQuery('[name=voting-list]').val(),
-    address: jQuery('[name=accounts-list]').val()
-  });
+  if (jQuery('[name=accounts-list]').val() == 0) {
+    alert('Please choose account to make vote');
+  } else {
+    socket.emit('newVote', {
+      option: jQuery('[name=voting-list]').val(),
+      address: jQuery('[name=accounts-list]').val()
+    });
+  }
 });

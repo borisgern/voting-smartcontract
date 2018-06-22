@@ -17,31 +17,45 @@
       </thead>
       <tbody>
         <tr>
-          <td>Candidate 1</td>
+          <td id="name">Candidate 1</td>
           <td id="option">0</td>
         </tr>
         <tr>
-          <td>Candidate 2</td>
+          <td id="name">Candidate 2</td>
           <td id="option">0</td>
         </tr>
         <tr>
-          <td>Against all</td>
+          <td id="name">Against all</td>
           <td id="option">0</td>
         </tr>
       </tbody>
     </table>
   </div>
+
+
+
   <form id="vote-form">
+    <div>
+      <br></br>
+      <label>Choose options to make vote:</label>
+    </div>
+    <div>
+  <label>Your candidate: </label>
   <select name="voting-list">
     <option value="1">Candidate 1</option>
     <option value="2">Candidate 2</option>
     <option value="3">Against all</option>
   </select>
+</div>
+<div>
+  <label>Your account: </label>
   <select name="accounts-list">
-    <!-- <option value="1"></option> -->
+    <option value=0>Loading...</option>
   </select>
-  <!-- <input type="text" name="option" placeholder="Type your option here"/> -->
-  <button id="send-button">Vote</button>
+  <div>
+  <button id="send-button" disabled>Vote</button>
+</div>
+</div>
 </form>
 
 <script id="accounts-list-template" type="text/template">
@@ -51,6 +65,7 @@
 </body>
 <script src="js/libs/jquery-3.3.1.min.js"></script>
 <script src="js/libs/mustache.js"></script>
+<script src="js/libs/deparam.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="js/voting.js"></script>
 </html>
