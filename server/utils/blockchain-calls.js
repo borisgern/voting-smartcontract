@@ -34,7 +34,7 @@ var initVoting = (options) => {
       contract.OBJ.new(options, {from: ownerAccount, data: `0x${contract.BIN}`, gas: 4700000}, (e, contr) => {
             if(!e) {
               if(contr.address) {
-                  resolve(contr);
+                  resolve({contr, contract});
                }
              } else {
                reject(e);

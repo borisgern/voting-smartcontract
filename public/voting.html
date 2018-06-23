@@ -31,36 +31,35 @@
       </tbody>
     </table>
   </div>
-
-
-
+  <br>
   <form id="vote-form">
     <div>
-      <br></br>
       <label>Choose options to make vote:</label>
     </div>
     <div>
-  <label>Your candidate: </label>
-  <select name="voting-list">
-    <option value="1">Candidate 1</option>
-    <option value="2">Candidate 2</option>
-    <option value="3">Against all</option>
-  </select>
-</div>
-<div>
-  <label>Your account: </label>
-  <select name="accounts-list">
-    <option value=0>Loading...</option>
-  </select>
-  <div>
-  <button id="send-button" disabled>Vote</button>
-</div>
-</div>
-</form>
+      <label>Your candidate: </label>
+      <select name="voting-list">
+        <option value="1">Candidate 1</option>
+        <option value="2">Candidate 2</option>
+        <option value="3">Against all</option>
+      </select>
+    </div>
+    <div>
+      <label>Your account: </label>
+      <select name="accounts-list">
+        <option value=0>Loading...</option>
+      </select>
+    </div>
+    <button id="send-button" disabled>Vote</button>
+    <div>
+      <br>
+      <label id="status">Status: </label>
+    </div>
+  </form>
 
-<script id="accounts-list-template" type="text/template">
-  <option value={{value}}>{{text}}</option>
-</script>
+  <script id="accounts-list-template" type="text/template">
+    <option value={{value}}>{{text}}</option>
+  </script>
 
 </body>
 <script src="js/libs/jquery-3.3.1.min.js"></script>
