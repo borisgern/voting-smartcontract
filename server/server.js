@@ -3,11 +3,13 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 
-var {initVoting, createContractObject, createContractInstance, getResult, vote, generateAccounts} = require('./utils/blockchain-calls');
+var {checkStatus, initVoting, createContractObject, createContractInstance, getResult, vote, generateAccounts} = require('./utils/blockchain-calls');
 
 var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
+
+var exec = require('child_process').exec, child;
 
 const publicPath = path.join(__dirname, '../public');
 const port = process.env.PORT || 3000;
@@ -29,6 +31,49 @@ var updateVotingResult = (res) => {
   return sameResult;
 };
 
+//console.log(checkStatus());
+checkStatus();
+child = exec('geth --datadir \"./ethereum_dev_mode\" account new --password ./ethereum_dev_mode/keystore/pas.txt',
+      function (error, stdout, stderr) {
+          console.log('stdout: ' + stdout);
+          console.log('stderr: ' + stderr);
+          if (error !== null) {
+               console.log('exec error: ' + error);
+          }
+          });
+
+          // child = exec('start cmd.exe @cmd /k \"geth --datadir \"./ethereum_dev_mode\" --mine --minerthreads 1 --dev --rpc --rpcapi \"eth, web3, net, rps, personal\" console\"',
+          //           function (error, stdout, stderr) {
+          //           //    console.log('stdout: ' + stdout);
+          //             //  console.log('stderr: ' + stderr);
+          //               if (error !== null) {
+          //                    console.log('exec error: ' + error);
+          //               }
+          //           });
+// if(!checkStatus()) {
+//   child = exec('geth --datadir \"./ethereum_dev_mode\" account new --password ./ethereum_dev_mode/keystore/pas.txt',
+//       function (error, stdout, stderr) {
+//           console.log('stdout: ' + stdout);
+//           console.log('stderr: ' + stderr);
+//           if (error !== null) {
+//                console.log('exec error: ' + error);
+//           }
+//       });
+//
+//       child = exec('start cmd.exe @cmd /k \"geth --datadir \"./ethereum_dev_mode\" --mine --minerthreads 1 --dev --rpc --rpcapi \"eth, web3, net, rps, personal\" console\"',
+//           function (error, stdout, stderr) {
+//           //    console.log('stdout: ' + stdout);
+//             //  console.log('stderr: ' + stderr);
+//               if (error !== null) {
+//                    console.log('exec error: ' + error);
+//               }
+//           });
+//
+//
+// }
+
+
+
 var sc = initVoting(candidateOptions);
 sc.then((result) => {
   console.log(`contract ${result.contr.address} was added in blockchain`);
@@ -36,6 +81,9 @@ sc.then((result) => {
 }, (e) => {
 console.log(e);
 });
+
+
+
 
 app.use(express.static(publicPath));
 

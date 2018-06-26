@@ -7,6 +7,18 @@ var pas = "1";
 var web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 
+var checkStatus = () => {
+  try {console.log(web3.eth.coinbase);}
+  catch(err)
+  {fs.writeFileSync('./ethereum_dev_mode/keystore/pas.txt', '1');}
+  // if(true) {
+  //   console.log("no accounts");
+  //   fs.writeFileSync('./ethereum_dev_mode/keystore/pas.txt', '1');
+  //   return false;
+  // }
+  // return true;
+}
+
 var generateAccounts = (number) => {
   var accounts = [];
   for (var i = 0; i<number; i++) {
@@ -69,4 +81,4 @@ var vote = (sc, option, address) => {
 
 
 
-module.exports = {initVoting, createContractObject, createContractInstance, getResult, vote, generateAccounts};
+module.exports = {checkStatus, initVoting, createContractObject, createContractInstance, getResult, vote, generateAccounts};

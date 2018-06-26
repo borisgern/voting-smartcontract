@@ -1,0 +1,14 @@
+miner.stop()
+eth.accounts
+miner.stop()
+eth.accounts
+eth.coinbase
+miner.stop()
+eth.accounts
+eth.coinbase
+eth.accounts
+eth.getBalance(eth.coinbase)
+eth.getBalance(eth.accounts[0])
+eth.getBalance(eth.accounts[1])
+eth.getBalance(eth.accounts[2])
+eth.getBalance(eth.accounts[3])
