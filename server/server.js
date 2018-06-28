@@ -32,15 +32,15 @@ var updateVotingResult = (res) => {
 };
 
 //console.log(checkStatus());
-checkStatus();
-child = exec('geth --datadir \"./ethereum_dev_mode\" account new --password ./ethereum_dev_mode/keystore/pas.txt',
-      function (error, stdout, stderr) {
-          console.log('stdout: ' + stdout);
-          console.log('stderr: ' + stderr);
-          if (error !== null) {
-               console.log('exec error: ' + error);
-          }
-          });
+// checkStatus();
+// child = exec('geth --datadir \"./ethereum_dev_mode\" account new --password ./ethereum_dev_mode/keystore/pas.txt',
+//       function (error, stdout, stderr) {
+//           console.log('stdout: ' + stdout);
+//           console.log('stderr: ' + stderr);
+//           if (error !== null) {
+//                console.log('exec error: ' + error);
+//           }
+//           });
 
           // child = exec('start cmd.exe @cmd /k \"geth --datadir \"./ethereum_dev_mode\" --mine --minerthreads 1 --dev --rpc --rpcapi \"eth, web3, net, rps, personal\" console\"',
           //           function (error, stdout, stderr) {
@@ -73,7 +73,7 @@ child = exec('geth --datadir \"./ethereum_dev_mode\" account new --password ./et
 // }
 
 
-
+console.log('adding sc in blockchains');
 var sc = initVoting(candidateOptions);
 sc.then((result) => {
   console.log(`contract ${result.contr.address} was added in blockchain`);
@@ -110,9 +110,11 @@ io.on('connection', (socket) => {
     console.log(`new vote from ${receivedVote.address} received: ${receivedVote.option}`);
     io.emit('updateStatus', `Received vote from ${receivedVote.address} for ${votingResult[receivedVote.option-1].name}, sending vote in blockchain`)
 
-    if (vote(scInst, receivedVote.option, receivedVote.address)) {
-      console.log(`account ${receivedVote.address} voted`);
-    };
+    // if (vote(scInst, receivedVote.option, receivedVote.address)) {
+    //   console.log(`account ${receivedVote.address} voted`);
+    // };
+    vote(scInst, receivedVote.option, receivedVote.address);
+
 
     if (updateVotingResult(getResult(scInst, candidateOptions)) == 0) {
       io.emit('updateStatus', `Account ${receivedVote.address} has already voted, new vote for ${votingResult[receivedVote.option-1].name} was not counted`)

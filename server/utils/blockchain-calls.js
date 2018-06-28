@@ -7,6 +7,8 @@ var pas = "1";
 var web3 = new Web3();
 web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 
+var coinbaseAddress = web3.eth.coinbase;
+
 var checkStatus = () => {
   try {console.log(web3.eth.coinbase);}
   catch(err)
@@ -38,7 +40,7 @@ var createContractObject = (scCode) => {
 };
 
 var initVoting = (options) => {
-    var ownerAccount = createAccount(pas);
+    var ownerAccount = '0x3d466f07d26f76bdd8e658cd0ed7dee11dfea7e7';
     console.log(`owner account ${ownerAccount} was created`);
     var contract = createContractObject('./voting.sol');
     return new Promise((resolve, reject) => {
@@ -72,13 +74,19 @@ var getResult = (sc, options) => {
 };
 
 var vote = (sc, option, address) => {
+  coinbaseAddress = web3.eth.coinbase;
+  web3.personal.unlockAccount(coinbaseAddress, pas, 30);
+  console.log('address balance before', web3.eth.getBalance(address));
+  var tx = web3.eth.sendTransaction({from: coinbaseAddress, to: address, value: 1000000000000000000});
+  while (web3.eth.getTransactionReceipt(tx) === null);
+  console.log('address balance after', web3.eth.getBalance(address));
   web3.personal.unlockAccount(address, pas, 30);
-  var txHash = sc.vote(option, {from: address});
-  console.log("txHash = ",txHash);
-  while (web3.eth.getTransactionReceipt(txHash) === null);
-  return true;
-};
 
+  tx = sc.vote(option, {from: address, gas: '0x186A0', gasPrice: '0x77359400'});
+  while (web3.eth.getTransactionReceipt(tx) === null);
+
+  return console.log('vote added in blockchain ', web3.eth.getTransactionReceipt(tx));
+};
 
 
 module.exports = {checkStatus, initVoting, createContractObject, createContractInstance, getResult, vote, generateAccounts};
