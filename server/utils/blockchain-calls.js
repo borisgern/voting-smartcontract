@@ -9,18 +9,6 @@ web3.setProvider(new web3.providers.HttpProvider('http://localhost:8545'));
 
 var coinbaseAddress = web3.eth.coinbase;
 
-var checkStatus = () => {
-  try {console.log(web3.eth.coinbase);}
-  catch(err)
-  {fs.writeFileSync('./ethereum_dev_mode/keystore/pas.txt', '1');}
-  // if(true) {
-  //   console.log("no accounts");
-  //   fs.writeFileSync('./ethereum_dev_mode/keystore/pas.txt', '1');
-  //   return false;
-  // }
-  // return true;
-}
-
 var generateAccounts = (number) => {
   var accounts = [];
   for (var i = 0; i<number; i++) {
@@ -40,12 +28,11 @@ var createContractObject = (scCode) => {
 };
 
 var initVoting = (options) => {
-    var ownerAccount = '0x3d466f07d26f76bdd8e658cd0ed7dee11dfea7e7';
-    console.log(`owner account ${ownerAccount} was created`);
+
     var contract = createContractObject('./voting.sol');
     return new Promise((resolve, reject) => {
-      web3.personal.unlockAccount(ownerAccount, pas, 30);
-      contract.OBJ.new(options, {from: ownerAccount, data: `0x${contract.BIN}`, gas: 4700000}, (e, contr) => {
+      web3.personal.unlockAccount(coinbaseAddress, pas, 30);
+      contract.OBJ.new(options, {from: coinbaseAddress, data: `0x${contract.BIN}`, gas: 4700000}, (e, contr) => {
             if(!e) {
               if(contr.address) {
                   resolve({contr, contract});
@@ -74,7 +61,6 @@ var getResult = (sc, options) => {
 };
 
 var vote = (sc, option, address) => {
-  coinbaseAddress = web3.eth.coinbase;
   web3.personal.unlockAccount(coinbaseAddress, pas, 30);
   console.log('address balance before', web3.eth.getBalance(address));
   var tx = web3.eth.sendTransaction({from: coinbaseAddress, to: address, value: 1000000000000000000});
@@ -85,8 +71,8 @@ var vote = (sc, option, address) => {
   tx = sc.vote(option, {from: address, gas: '0x186A0', gasPrice: '0x77359400'});
   while (web3.eth.getTransactionReceipt(tx) === null);
 
-  return console.log('vote added in blockchain ', web3.eth.getTransactionReceipt(tx));
+  console.log('vote added in blockchain in block', web3.eth.getTransactionReceipt(tx).blockNumber);
 };
 
 
-module.exports = {checkStatus, initVoting, createContractObject, createContractInstance, getResult, vote, generateAccounts};
+module.exports = {initVoting, createContractObject, createContractInstance, getResult, vote, generateAccounts};

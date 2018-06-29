@@ -23,9 +23,16 @@
         <input type="text" name="votersNumber" />
       </div>
       <div class="form-field">
-        <button>Start voting</buttton>
+        <button id="start-button" disabled>Start voting</buttton>
+      </div>
+      <div>
+        <br>
+        <label id="status">Status: </label>
       </div>
     </form>
   </div>
 </body>
+<script src="js/libs/jquery-3.3.1.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/index.js"></script>
 </html>
