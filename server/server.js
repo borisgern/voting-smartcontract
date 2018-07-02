@@ -9,6 +9,9 @@ var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
 
+io.set('heartbeat timeout', 60000);
+io.set('heartbeat interval', 25000);
+
 var exec = require('child_process').exec, child;
 
 const publicPath = path.join(__dirname, '../public');
@@ -47,8 +50,8 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
   console.log('client is connected to server', socket.id);
 
-  socket.on('disconnect', () => {
-    console.log('disconnect: ', socket.id);
+  socket.on('disconnect', (reason) => {
+    console.log('disconnect: ', reason);
   });
 
   socket.on('initContract', (callback) => {
