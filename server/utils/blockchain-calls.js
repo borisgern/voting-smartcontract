@@ -62,10 +62,10 @@ var getResult = (sc, options) => {
 
 var vote = (sc, option, address) => {
   web3.personal.unlockAccount(coinbaseAddress, pas, 30);
-  console.log('address balance before', web3.eth.getBalance(address));
-  var tx = web3.eth.sendTransaction({from: coinbaseAddress, to: address, value: 1000000000000000000});
+  //console.log('address balance before', web3.eth.getBalance(address));
+  var tx = web3.eth.sendTransaction({from: coinbaseAddress, to: address, value: 300000000000000});
   while (web3.eth.getTransactionReceipt(tx) === null);
-  console.log('address balance after', web3.eth.getBalance(address));
+  //console.log('address balance after', web3.eth.getBalance(address));
   web3.personal.unlockAccount(address, pas, 30);
 
   tx = sc.vote(option, {from: address, gas: '0x186A0', gasPrice: '0x77359400'});

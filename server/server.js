@@ -48,10 +48,10 @@ var startNewVoting = async () => {
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
-  console.log('client is connected to server', socket.id);
+  //console.log('client is connected to server', socket.id);
 
   socket.on('disconnect', (reason) => {
-    console.log('disconnect: ', reason);
+    //console.log('disconnect: ', reason);
   });
 
   socket.on('initContract', (callback) => {

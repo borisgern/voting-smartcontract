@@ -1,6 +1,6 @@
 =============== Jul 2, 2018 (MSK) ===============
-14:56:11.006081 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
-14:56:11.064330 db@open opening
-14:56:11.064658 version@stat F·[] S·0B[] Sc·[]
-14:56:11.109308 db@janitor F·2 G·0
-14:56:11.109361 db@open done T·44.996468ms
+15:16:51.032906 log@legend F·NumFile S·FileSize N·Entry C·BadEntry B·BadBlock Ke·KeyError D·DroppedEntry L·Level Q·SeqNum T·TimeElapsed
+15:16:51.095678 db@open opening
+15:16:51.096883 version@stat F·[] S·0B[] Sc·[]
+15:16:51.129550 db@janitor F·2 G·0
+15:16:51.129618 db@open done T·33.877349ms
